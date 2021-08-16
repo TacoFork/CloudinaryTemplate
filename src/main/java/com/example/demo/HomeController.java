@@ -35,7 +35,7 @@ public class HomeController {
     }
 
     @RequestMapping("/logout")
-    public String logout(){
+    public String logout() {
         return "redirect:/login?logout=true";
     }
 }

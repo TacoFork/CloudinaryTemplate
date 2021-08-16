@@ -14,24 +14,24 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login?logout=true").permitAll();
+        @Override
+        protected void configure(HttpSecurity httpSecurity) throws Exception{
+            httpSecurity.authorizeRequests()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/**").permitAll()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login").permitAll()
+                    .and()
+                    .logout()
+                    .logoutSuccessUrl("/login?logout=true").permitAll();
+
+            httpSecurity.csrf().disable();
+            httpSecurity.headers().frameOptions().disable();
+        }
 
 
-        //for accessing H2 for debugging purpose
-        httpSecurity.csrf().ignoringAntMatchers("/h2-console/**");
-        httpSecurity.headers().frameOptions().sameOrigin();
-    }
-
-    @Bean
+        @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
